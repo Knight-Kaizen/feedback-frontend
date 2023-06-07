@@ -1,11 +1,11 @@
 
-export 
-const clientSideValidation = (userObj)=>{
-    console.log('checking data here', userObj);
-    const {name, email, mobile, password} = userObj;
+export
+    const clientSideValidation = (userObj) => {
+        console.log('checking data here', userObj);
+        const { name, email, mobile, password } = userObj;
         const error = {};
 
-        if(!name){
+        if (!name) {
             error.name = 'Name is required';
         }
 
@@ -19,7 +19,7 @@ const clientSideValidation = (userObj)=>{
         if (!password) {
             error.password = 'Password is required';
         }
-        else if(password.length < 6){
+        else if (password.length < 6) {
             error.password = 'Password must be of 6 characters';
         }
 
@@ -32,10 +32,10 @@ const clientSideValidation = (userObj)=>{
         let allOK;
         if (Object.keys(error).length == 0)
             allOK = true;
-        else 
+        else
             allOK = false;
         return {
             success: allOK,
-            errors : error
+            errors: error
         }
-}
+    }
