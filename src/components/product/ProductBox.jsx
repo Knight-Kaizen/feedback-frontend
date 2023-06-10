@@ -26,6 +26,7 @@ function ProductBox(){
                     <img src="../../Images/comment.png" alt="" />
                 </div>
             </div>
+            
         </div>
     )
 }

@@ -1,21 +1,22 @@
-import { useContext, useState } from 'react'
-import styles from './LoginPage.module.css'
+import { useContext, useState } from 'react';
+import styles from './Login.module.css'
 import { clientSideValidation } from '../../actions/Helper';
-import { UserContext } from '../../App';
-import { useNavigate } from 'react-router-dom';
 import { getUserLoggedIn } from '../../actions/api';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { UserContext } from '../../App';
 
-export default
-    function LoginPage() {
+
+export default 
+function Login(){
 
     const [userDetails, setUserDetails] = useState({
         email: '',
         password: ''
     })
     const [errors, setErrors] = useState({});
-    const {setUserLoggedIn} = useContext(UserContext);
+    const {setUserLoggedIn, setModalToShow} = useContext(UserContext);
     const navigate = useNavigate();
 
 
@@ -44,7 +45,7 @@ export default
             if(userLogIn.success){
                 toast.success(userLogIn.message, {autoClose: 3000});
                 setUserLoggedIn(true);
-                navigate('/');
+                setModalToShow('AddProducts');
             }
             else{
                 toast.error(userLogIn.message, {autoClose: 3000});
@@ -57,14 +58,12 @@ export default
     }
 
     const handleSignUp = () => {
-        navigate('/signUp');
+        setModalToShow('SignUp');
     }
 
     return (
-        <div className={styles.main}>
-            <h1 className={styles.text1}>Feedback</h1>
-            <h3 className={styles.text2}>Add your products and give us your valuable feedback</h3>
-            <div className={styles.mainBox}>
+        <div className={styles.mainBox}>
+                            <span className={styles.text2}>Log in to continue</span>
                 <div className={styles.box1}>
                     <img src="../../Images/Email.png" alt="img-1" className={styles.image1} />
                     <input placeholder='Email' className={styles.input1} name='email' onChange={handleChange}></input>
@@ -80,6 +79,6 @@ export default
                     <span className={styles.button1} onClick={handleSubmit}>Login</span>
                 </div>
             </div>
-        </div>
+        
     )
 }

@@ -1,15 +1,51 @@
+import { useContext, useState } from 'react';
+import { useNavigate } from "react-router-dom"
 import FilterChip from '../../components/filterChip/FilterChip'
+import Modal from '../../components/modal/Modal'
 import ProductBox from '../../components/product/ProductBox'
 import styles from './HomePage.module.css'
+import { UserContext } from '../../App';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default
 function HomePage(){
+
+    
+    const navigate = useNavigate();
+
+    const {userLoggedIn, setUserLoggedIn, modalToShow, setModalToShow, showModal, setShowModal} = useContext(UserContext);
+
+
+
+
+
+    const handleLoginLogout = ()=>{
+        if(userLoggedIn){
+            setUserLoggedIn(false);
+            toast.success('User Logged out!');
+        }
+        else{
+            navigate('login');        
+        }
+    }
+
+    const handleAddProducts = ()=>{
+        if(userLoggedIn){
+            setModalToShow('AddProducts');
+        }
+        else{
+            setModalToShow('LogIn');
+        }
+        setShowModal(true);
+    }
 
     return(
         <>
             <div className={styles.header}>
                 <span className={styles.text1}>Feedback</span>
-                <span className={styles.text2}>Login</span>
-                <span className={styles.text2}>Sign up</span>
+                <span className={styles.text2} onClick={handleLoginLogout}>{userLoggedIn? 'Logout': 'Login'}</span>
+                <span className={styles.text2} onClick={()=>navigate('signUp')}>Sign up</span>
             </div>
             <div className={styles.bodyUpper}>
                 <div className={styles.upLeft}>
@@ -46,7 +82,7 @@ function HomePage(){
                             <span className={styles.innerBox2}>Comments</span>
                             {/* <span className={styles.innerBox2}>Comments</span> */}
                         </div>
-                        <div className={styles.box4}>+ Add Products</div>
+                        <div className={styles.box4} onClick={handleAddProducts}>+ Add Products</div>
                     </div>  
 
                     <div className={styles.box5}>
@@ -55,6 +91,7 @@ function HomePage(){
                     </div>
                 </div>
             </div>
+            {showModal && <Modal show = {modalToShow}/>}
             
         </>
     )
