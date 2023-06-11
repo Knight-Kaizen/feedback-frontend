@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { addProduct } from '../../actions/api';
+import { useNavigate } from 'react-router-dom';
 export default
 function AddProduct(){
 
@@ -16,6 +17,8 @@ function AddProduct(){
         productDescription: ''
     })
     const {setShowModal} = useContext(UserContext);
+    const navigate = useNavigate();
+
 
     const handleChange = (e)=>{
         setProductDetails((prevDetails) => {
@@ -38,11 +41,11 @@ function AddProduct(){
             if(result.success){
                 toast.success(result.message, {autoclose: 3000});
                 setShowModal(false);
-                // console.log('in result->success');
+                navigate('/');
             }
             else{
                 toast.error(result.message, {autoclose: 3000});
-                // console.log('in result->eror');
+                // console.log('in result->error');
             }
         }
 

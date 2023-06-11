@@ -221,7 +221,7 @@
 .box5{
     width: 90%;
     min-height: 80%;
-    /* padding: .5rem; */
+    padding: .5rem 0 2rem 0;
     /* background-color: red; */
     margin: 2rem 1rem;
     border-radius: .5rem;

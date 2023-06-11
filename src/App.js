@@ -4,6 +4,7 @@ import LoginPage from "./pages/login/LoginPage";
 import SignUpPage from "./pages/signup/SignUpPage";
 import { createContext, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
+import { getAllFilters, getAllProducts } from "./actions/api";
 
   const UserContext = createContext();
 function App() {
@@ -12,10 +13,20 @@ function App() {
   const [modalToShow, setModalToShow] = useState('');
   const [showModal, setShowModal] = useState(false);
   
+
+
   useEffect(()=>{
+
     //check if user is logged in
     setUserLoggedIn(false);
+    
   }, [])
+ 
+  // useEffect(()=>{
+    
+    
+
+  // }, [products])
 
 
   return (
@@ -23,7 +34,7 @@ function App() {
       value={{
         userLoggedIn, setUserLoggedIn,
         modalToShow, setModalToShow,
-        showModal, setShowModal 
+        showModal, setShowModal
       }}
     >
 

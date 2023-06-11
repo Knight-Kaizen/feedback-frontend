@@ -29,12 +29,52 @@ const addProduct = async(productDetails)=>{
     });
 }
 
+const getAllProducts = async()=>{
 
+    return({
+        success: true,
+        data: [
+            {
+                name: 'Cred Club',
+                image_url: 'this is image url',
+                tags: ['Fintech', 'B2B'],
+                comments: [
+                    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, praesentium.',
+                    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, praesentium maiores tempore velit tenetur provident.',
+                    'maiores tempore velit tenetur provident.maiores tempore velit tenetur provident.'
+                ]
+            },
+            {
+                name: 'Cred Club2',
+                image_url: 'image url 2',
+                tags: ['Agritech'],
+                comments: [
+                    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, praesentium.',
+                    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, praesentium maiores tempore velit tenetur provident.',
+                    'maiores tempore velit tenetur provident.maiores tempore velit tenetur provident.'
+                ]
+
+            }
+        ]
+    })
+}
+
+const getAllFilters = async()=>{
+    
+    return({
+        success: true,
+        data: [
+            'B2B', 'Fintech', 'Check3'
+        ]
+    })
+}
 
 
 
 export {
     getUserRegistered,
     getUserLoggedIn,
-    addProduct
+    addProduct,
+    getAllProducts,
+    getAllFilters
 }

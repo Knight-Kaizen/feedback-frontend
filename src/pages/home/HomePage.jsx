@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom"
 import FilterChip from '../../components/filterChip/FilterChip'
 import Modal from '../../components/modal/Modal'
@@ -7,6 +7,7 @@ import styles from './HomePage.module.css'
 import { UserContext } from '../../App';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getAllFilters, getAllProducts } from '../../actions/api';
 
 export default
 function HomePage(){
@@ -15,6 +16,55 @@ function HomePage(){
     const navigate = useNavigate();
 
     const {userLoggedIn, setUserLoggedIn, modalToShow, setModalToShow, showModal, setShowModal} = useContext(UserContext);
+    const [productDisplay, setProductDisplay] = useState([]);
+    const [tagDisplay, setTagDisplay] = useState([]);
+
+
+    useEffect(()=>{
+
+        const getProductsAndDisplay = async()=>{
+            const result = await getAllProducts();
+            if(result.success){
+                const tempDisplay = result.data.map((item)=>{
+                    return(
+                        <ProductBox 
+                            name = {item.name}
+                            tags = {item.tags}
+                            comments = {item.comments}
+                        />
+                    )
+                })
+                setProductDisplay(tempDisplay);
+
+            }
+            else{
+                toast.error('Error in getting products, please retry!', {autoClose: 3000});
+            }
+        }
+
+        const getFiltersAndDisplay = async()=>{
+            const result = await getAllFilters();
+            if(result.success){
+                const tempDisplay = result.data.map((item)=>{
+                    
+                    return(
+                        <FilterChip 
+                            name = {item}
+                        />
+                    )
+                })
+
+                setTagDisplay(tempDisplay);
+            }
+            else{
+                toast.error('Error in getting filters', {autoClose: 3000});
+            }
+        }
+
+        getProductsAndDisplay();
+        getFiltersAndDisplay();
+    }, [])
+
 
 
 
@@ -64,12 +114,7 @@ function HomePage(){
                     </div>
                     <div className={styles.box2}>
                         <FilterChip name = {'All'}/>
-                        <FilterChip name = {'Fintech'}/>
-                        <FilterChip name = {'Edtech'}/>
-                        <FilterChip name = {'B2B'}/>
-                        <FilterChip name = {'Saas'}/>
-                        <FilterChip name = {'Agritech'}/>
-                        <FilterChip name = {'Medtech'}/>
+                        {tagDisplay}
                     </div>
                 </div>
                 <div className={styles.lowerRight}>
@@ -86,8 +131,8 @@ function HomePage(){
                     </div>  
 
                     <div className={styles.box5}>
-                        <ProductBox/>
-                        <ProductBox/>
+                        {productDisplay}
+                        {productDisplay}
                     </div>
                 </div>
             </div>

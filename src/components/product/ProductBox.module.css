@@ -10,7 +10,7 @@
     margin-top: 1rem;
     height: 8rem;
     padding: .5rem;
-    border-radius: .5rem;
+    border-radius: .5rem .5rem 0 0;
     display: flex;
 }
 .image1{
@@ -80,4 +80,56 @@
 }
 .text4{
     color: #ABABAB;
+}
+.chipItems{
+    padding: .3rem 1rem;
+    background-color: #C0CEFF;
+    border-radius: 1rem;
+}
+
+.main2{
+    height: 12rem;
+    background-color: #36416A26 ;
+    /* margin-bottom: 1rem; */
+}
+
+.top{
+    height: 4rem;
+    /* background-color: lightblue; */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.commentBox{
+    height: 2.5rem;
+    width: 85%;
+    border: none;
+    border-radius: 1.25rem 0 0 1.25rem;
+    font-size: 1.2rem;
+    padding: .5rem 1rem;
+}
+.image4{
+    height: 2.5rem;
+    padding:  .5rem;
+    background-color: white;
+    object-fit: contain;
+    border-radius: 0 1.25rem 1.25rem 0;
+}
+
+.bottom{
+    height: 8rem;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    overflow: scroll;
+}
+.comments{
+    padding: .5rem 1rem;
+    /* min-height: 2rem; */
+    background-color: #C7CBD6;
+    margin: .25rem .5rem;
+    border-radius: 1rem;
+
+    /* overflow: hidden; */
 }
