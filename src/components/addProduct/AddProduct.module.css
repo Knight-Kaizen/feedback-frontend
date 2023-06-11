@@ -30,6 +30,9 @@
     border-bottom: 1px solid;
     color: #737373;
 }
+.input1:focus{
+    outline: none;
+}
 .button1{
     width: 5rem;
     height: 1.8rem;
@@ -43,4 +46,8 @@
 
     background-color: #36416A;
     color: white;
+}
+.box1{
+    display: flex;
+    justify-content: space-around;
 }

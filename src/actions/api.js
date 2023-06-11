@@ -64,7 +64,7 @@ const getAllFilters = async()=>{
     return({
         success: true,
         data: [
-            'B2B', 'Fintech', 'Check3'
+            'All', 'B2B', 'Fintech', 'Check3'
         ]
     })
 }

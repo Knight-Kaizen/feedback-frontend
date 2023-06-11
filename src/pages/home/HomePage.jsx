@@ -8,94 +8,124 @@ import { UserContext } from '../../App';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getAllFilters, getAllProducts } from '../../actions/api';
-
+import useWindowResize from '../../hooks/useWindowResize';
 export default
-function HomePage(){
+    function HomePage() {
 
-    
+
     const navigate = useNavigate();
 
-    const {userLoggedIn, setUserLoggedIn, modalToShow, setModalToShow, showModal, setShowModal} = useContext(UserContext);
+    const { userLoggedIn, setUserLoggedIn, modalToShow, setModalToShow, showModal, setShowModal, filterSelected, setFilterSelected, sortBy, setSortBy } = useContext(UserContext);
     const [productDisplay, setProductDisplay] = useState([]);
     const [tagDisplay, setTagDisplay] = useState([]);
+    const [displaySortOptions, setDisplaySortOptions] = useState();
+
+    const { width } = useWindowResize();
+
 
 
     useEffect(()=>{
+        setDisplaySortOptions(false);
+    }, [])
 
-        const getProductsAndDisplay = async()=>{
+    useEffect(() => {
+
+        const getProductsAndDisplay = async () => {
             const result = await getAllProducts();
-            if(result.success){
-                const tempDisplay = result.data.map((item)=>{
-                    return(
-                        <ProductBox 
-                            name = {item.name}
-                            tags = {item.tags}
-                            comments = {item.comments}
+            if (result.success) {
+                const tempDisplay = result.data.map((item) => {
+                    return (
+                        <ProductBox
+                            name={item.name}
+                            tags={item.tags}
+                            comments={item.comments}
                         />
                     )
                 })
                 setProductDisplay(tempDisplay);
 
             }
-            else{
-                toast.error('Error in getting products, please retry!', {autoClose: 3000});
+            else {
+                toast.error('Error in getting products, please retry!', { autoClose: 3000 });
             }
         }
 
-        const getFiltersAndDisplay = async()=>{
+        getProductsAndDisplay();
+
+    }, [productDisplay])
+
+    useEffect(() => {
+
+        const getFiltersAndDisplay = async () => {
             const result = await getAllFilters();
-            if(result.success){
-                const tempDisplay = result.data.map((item)=>{
-                    
-                    return(
-                        <FilterChip 
-                            name = {item}
+            if (result.success) {
+                const tempDisplay = result.data.map((item) => {
+                    let isSelected = false;
+                    // console.log('checking selection', item);
+
+                    if (item == filterSelected) {
+                        isSelected = true;
+                        // console.log('selected', item)
+                    }
+
+                    return (
+                        <FilterChip
+                            name={item}
+                            isSelected={isSelected}
                         />
                     )
                 })
 
                 setTagDisplay(tempDisplay);
             }
-            else{
-                toast.error('Error in getting filters', {autoClose: 3000});
+            else {
+                toast.error('Error in getting filters', { autoClose: 3000 });
             }
         }
 
-        getProductsAndDisplay();
         getFiltersAndDisplay();
-    }, [])
+    }, [filterSelected])
 
 
 
 
 
-
-    const handleLoginLogout = ()=>{
-        if(userLoggedIn){
+    const handleLoginLogout = () => {
+        if (userLoggedIn) {
             setUserLoggedIn(false);
             toast.success('User Logged out!');
         }
-        else{
-            navigate('login');        
+        else {
+            navigate('login');
         }
     }
 
-    const handleAddProducts = ()=>{
-        if(userLoggedIn){
+    const handleAddProducts = () => {
+        if (userLoggedIn) {
             setModalToShow('AddProducts');
         }
-        else{
+        else {
             setModalToShow('LogIn');
         }
         setShowModal(true);
     }
 
-    return(
+    const handleFilter = (filter)=>{
+        setDisplaySortOptions(displaySortOptions?false:true)
+        if(filter != 'Select'){
+            setSortBy(sortBy == filter ? 'Select': filter)
+        }
+
+    }
+
+    return (
         <>
             <div className={styles.header}>
                 <span className={styles.text1}>Feedback</span>
-                <span className={styles.text2} onClick={handleLoginLogout}>{userLoggedIn? 'Logout': 'Login'}</span>
-                <span className={styles.text2} onClick={()=>navigate('signUp')}>Sign up</span>
+                <div className={styles.HeaderBox}>
+                    <span className={styles.text2} onClick={handleLoginLogout}>{userLoggedIn ? 'Logout' : 'Login'}</span>
+                    <span className={styles.text2} onClick={() => navigate('signUp')}>Sign up</span>
+                </div>
             </div>
             <div className={styles.bodyUpper}>
                 <div className={styles.upLeft}>
@@ -106,29 +136,51 @@ function HomePage(){
                     <span className={styles.text4}>Easily give your feedback in a matter of minutes. Access your audience on all platforms. Observe result manually in real time</span>
                 </div>
             </div>
+
             <div className={styles.bodyLower}>
-                <div className={styles.lowerLeft}>
-                    <div className={styles.box1}>
-                        <span className={styles.text6}>Apply Filter</span>
-                        <span className={styles.text5}>Feedback</span>
-                    </div>
-                    <div className={styles.box2}>
-                        <FilterChip name = {'All'}/>
-                        {tagDisplay}
-                    </div>
-                </div>
+                {width > 600 &&
+                    <div className={styles.lowerLeft}>
+                        <div className={styles.box1}>
+                            <span className={styles.text6}>Apply Filter</span>
+                            <span className={styles.text5}>Feedback</span>
+                        </div>
+                        <div className={styles.box2}>
+                            {tagDisplay}
+                        </div>
+                    </div>}
                 <div className={styles.lowerRight}>
                     {/* box3 => upperBox */}
-                    <div className={styles.box3}> 
-                        <span className={styles.text7}> 10 Suggestions</span>
-                        <span className={styles.text8}>Sort By: </span>
+
+                    <div className={styles.box3}>
                         <div className={styles.box31}>
-                            <span className={styles.innerBox1}>Upvotes</span>
-                            <span className={styles.innerBox2}>Comments</span>
-                            {/* <span className={styles.innerBox2}>Comments</span> */}
+                        <span className={styles.text7}> 10 Suggestions</span>
+                        </div>
+                        <div className={styles.box32}>
+                            <div className={styles.box321}>
+                            <span className={styles.text8} >Sort By: </span>
+                            </div>
+                            
+                            <div className={styles.box322}>
+                            <span className={styles.innerBox1} onClick={()=>handleFilter('Select')}>{sortBy}</span>
+                            {displaySortOptions && <span className={styles.innerBox2} onClick={()=>handleFilter('UpVotes')}>Upvotes</span>}
+                            {displaySortOptions && <span className={styles.innerBox2} onClick={()=>handleFilter('Comments')}>Comments</span>}
+                            
+                            </div>
                         </div>
                         <div className={styles.box4} onClick={handleAddProducts}>+ Add Products</div>
-                    </div>  
+                    </div>
+
+                    {
+                        width < 600 &&
+                        <div className={styles.box00}>
+                            <div className={styles.text9}>Filters: </div>
+                    <div className={styles.box2}>
+                        {/* {tagDisplay} */}
+                        {tagDisplay}                     
+                    </div>
+                        </div>
+
+                    }
 
                     <div className={styles.box5}>
                         {productDisplay}
@@ -137,7 +189,7 @@ function HomePage(){
                 </div>
             </div>
             {showModal && <Modal show = {modalToShow}/>}
-            
+
         </>
     )
 }

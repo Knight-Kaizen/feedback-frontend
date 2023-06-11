@@ -6,6 +6,7 @@ export default
     const [displayChips, setDisplayChips] = useState();
     const [displayComments, setDisplayComments] = useState();
     const [showCommentBox, setShowCommentBox] = useState();
+    const [comment, setComment] = useState('');
 
     useEffect(() => {
         const tempDisplayChips = props.tags.map((item) => {
@@ -31,6 +32,17 @@ export default
         setShowCommentBox(showCommentBox ? false : true);
     }
 
+    const writeComment = (e)=>{
+        setComment(() => {
+            return e.target.value
+            
+        })
+    }
+
+    const handleComment = ()=>{
+        console.log('show comment', comment);
+    }
+
 
     return (
         <>
@@ -45,22 +57,22 @@ export default
                         <span className={styles.text4} onClick={handleCommentBox}>Comment</span>
                     </div>
                 </div>
-                object<div className={styles.box3}>
+                <div className={styles.box3}>
                     <div className={styles.box31}>
                         <img src='../../Images/likes.png' className={styles.image2}></img>
                         <span className={styles.text3}>112</span>
                     </div>
                     <div className={styles.box32}>
-                        <span>11</span>
-                        <img src="../../Images/comment.png" alt="" />
+                        <span className={styles.text5}>11</span>
+                        <img src="../../Images/comment.png" alt="" className={styles.image5} />
                     </div>
                 </div>
 
             </div>
             {showCommentBox && <div className={styles.main2}>
                 <div className={styles.top}>
-                    <input className={styles.commentBox} placeholder='Add a comment...'></input>
-                    <img src="../../Images/send.png" alt="" className={styles.image4} />
+                    <input className={styles.commentBox} placeholder='Add a comment...' onChange={writeComment}></input>
+                    <img src="../../Images/send.png" alt="" className={styles.image4} onClick={handleComment}/>
                 </div>
                 <div className={styles.bottom}>
                     {displayComments}

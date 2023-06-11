@@ -12,13 +12,15 @@ function App() {
   const [userLoggedIn, setUserLoggedIn] = useState();
   const [modalToShow, setModalToShow] = useState('');
   const [showModal, setShowModal] = useState(false);
-  
-
+  const [filterSelected, setFilterSelected] = useState();
+  const [sortBy, setSortBy] = useState();
 
   useEffect(()=>{
 
     //check if user is logged in
     setUserLoggedIn(false);
+    setFilterSelected('All');
+    setSortBy('Select');
     
   }, [])
  
@@ -34,7 +36,9 @@ function App() {
       value={{
         userLoggedIn, setUserLoggedIn,
         modalToShow, setModalToShow,
-        showModal, setShowModal
+        showModal, setShowModal,
+        filterSelected, setFilterSelected,
+        sortBy, setSortBy
       }}
     >
 

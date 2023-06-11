@@ -13,23 +13,30 @@
 
     color: white;
     display: flex;
-    display: flex;
+    justify-content: space-between;
     align-items: center;
 
 }
 .text1{
-    /* background-color: red; background-color: green;*/
     font-size: 2rem;
     margin-left: 1rem;
-    margin-right: 75%;
+   
     display: flex;
-    /* justify-content: center; */
+    align-items: center;
+}
+.HeaderBox{
+    /* width: 20%; */
+    height: 100%;
+    padding: 0 1rem;
+
+    display: flex;
+    justify-content: space-around;
     align-items: center;
 }
 .text2{
     /* background-color: green; */
-    width: 8rem;
-    margin-right: 1rem;
+    /* width: 40%; */
+    padding: 0 .5rem;
     height: 80%;
 
     display: flex;
@@ -43,7 +50,7 @@
 }
 
 .bodyUpper{
-    height: 70vh;
+    min-height: 70vh;
     width: 100vw;
 
     display: flex;
@@ -62,6 +69,7 @@
     width: 50%;
     height: 100%;
 
+    margin-bottom: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -149,74 +157,106 @@
 .box3{
     height: 3rem;
     width: 90%;
-    padding: 0 1rem;
     margin: 1rem;
     border: 1px solid #36416A59 ;
     border-radius: .5rem;
 
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+
+}
+
+.box31{
+    width: 30%;
+    padding: 0 .5rem;
+    /* background-color: red; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
+}
+.box32{
+    width: 30%;
+    height: 100%;
+    /* background-color: blue; */
+    display: flex;
     align-items: center;
     position: relative;
 }
+.box321{
+    padding: 0 1rem;
+}
+.box322{
+    height: 7rem;
+    width: calc(100% - 5rem);
+    position: absolute;
+    left: 5rem;
+    top: 0px;
+    /* background-color: yellow; */
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+}
+.innerBox1{
+    height: 3rem;
+    padding-left: .5rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+}
+.innerBox2{
+    height: 2rem;
+    background-color: grey;
+    padding-left: .5rem;
+    
+    /* border-radius: .5rem .5rem 0 0; */
+    display: flex;
+    align-items: center;
+}
 
+
+.box4{
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    background-color: #36416A;
+    color: white;
+
+}
 .text7{
-  width: 20%;
   font-weight: 550;
   font-size: 1.2rem;
   margin-right: 1rem;
 }
 .text8{
-    width: 20%;
     color: #8B8B8B;
     font-size: 1rem;
-    margin-right: 1rem;
 }
-.box31{
-    width: 10%;
-    height: 6rem;
-    /* background-color: red; */
-    position: absolute;
-    left: calc(30%);
-    top: 0;
-    /* padding: 0 1rem; */
 
-    display: flex;
-    flex-direction: column;
-    /* justify-content: center; */
-    /* align-items: center; */
-}
-.innerBox1{
+/* .innerBox1{
     height: 3rem;
     font-size: 1.2rem;
-    /* border: 1px solid #36416A; */
+   
     display: flex;
     font: 600;
 
-    /* justify-content: center; */
+   
     padding-left: .5rem;
     align-items: center;
-    /* background-color: red; */
-}
-.innerBox2{
+   
+} */
+/* .innerBox2{
     height: 1.5rem;
     border: 1px solid #36416A;
     padding-left: .5rem;
     background-color: white;
     display: flex;
     align-items: center;
-}
+} */
 
-.box4{
-    height: 80%;
-    width: 15%;
-    margin-left: 45%;
-    border-radius: .5rem;
-    background-color: #36416A;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
 
 .box5{
     width: 90%;
@@ -225,4 +265,49 @@
     /* background-color: red; */
     margin: 2rem 1rem;
     border-radius: .5rem;
+}
+
+@media screen and (max-width:600px) {
+    .bodyUpper{
+        flex-direction: column;
+    }
+    .upLeft{
+        width: 100%;
+    }
+    .upRight{
+        width: 100%;
+    }
+    .lowerRight{
+        align-items: center;
+        justify-content: center;
+    }
+    .box5{
+        width: 90vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        
+    }
+    .box00{
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .box2{
+        width: 90vw;
+        min-height: 2rem;
+        max-height: 6rem;
+        margin-bottom: 0;
+    }
+    .text9{
+        width: 90vw;
+        color: #8B8B8B;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+    .box3{
+        width: 90vw;
+    }
 }

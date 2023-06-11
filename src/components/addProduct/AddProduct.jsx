@@ -18,7 +18,7 @@ function AddProduct(){
     })
     const {setShowModal} = useContext(UserContext);
     const navigate = useNavigate();
-
+    // const {setShowModal} = useContext(UserContext);
 
     const handleChange = (e)=>{
         setProductDetails((prevDetails) => {
@@ -49,17 +49,26 @@ function AddProduct(){
             }
         }
 
+
+    }
+    const handleCancel = ()=>{
+        setShowModal(false);
     }
 
     return(
         <div className={styles.main}>
-            <span className={styles.text1}>Add your product </span>
+            <span className={styles.text1}>Add your product 
+            
+            </span>
             <input type="text" placeholder='Name of the company' name='name' className={styles.input1} onChange={handleChange}/>
             <input type="text" placeholder='Category' name='category' className={styles.input1} onChange={handleChange} />
             <input type="text" placeholder='Add logo url' name='logoUrl' className={styles.input1} onChange={handleChange} />
             <input type="text" placeholder='Link of product' name='productLink' className={styles.input1} onChange={handleChange} />
             <input type="text" placeholder='Description of product' name='productDescription' className={styles.input1} onChange={handleChange} />
+            <div className={styles.box1}>
+            <span className={styles.button1} onClick={handleCancel}>Cancel</span>
             <span className={styles.button1} onClick={handleSubmit}>+ Add</span>
+            </div>
         </div>
     )
 }
