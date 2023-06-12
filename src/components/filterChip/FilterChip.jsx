@@ -14,6 +14,7 @@ function FilterChip(props){
         // console.log('setting filter');
         setFilterSelected(name);
         // navigate('/');
+        props.handleClick(name);
     }
     // console.log('checking props', props);
     if(isSelected)

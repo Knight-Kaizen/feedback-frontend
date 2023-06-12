@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-    // baseURL: "http://localhost:8000"
-    baseURL: "https://feedback-h6w1.onrender.com"
+    baseURL: "http://localhost:8000"
+    // baseURL: "https://feedback-h6w1.onrender.com"
 });
 
 const getUserRegistered = async (UserDetails) => {
@@ -21,7 +21,7 @@ const getUserRegistered = async (UserDetails) => {
     }
     catch (err) {
         console.log('error in user register', err);
-        return({
+        return ({
             success: false,
             message: 'Error in registering user, try again'
         })
@@ -29,12 +29,12 @@ const getUserRegistered = async (UserDetails) => {
 }
 
 const getUserLoggedIn = async (UserDetails) => {
-    
+
     const { email, password } = UserDetails;
     const response = await api.post('/user/login', {
         email, password
     })
-    if(response.data.token){
+    if (response.data.token) {
         localStorage.setItem('feedbackUser', JSON.stringify(response.data.token));
     }
     return (
@@ -48,42 +48,42 @@ const getUserLoggedIn = async (UserDetails) => {
 }
 
 const addProduct = async (productDetails) => {
-    console.log('checking add Products details', productDetails);
-    return ({
-        success: true,
-        message: 'Product added successfully'
-    });
+    try {
+        console.log('checking add Products details', productDetails);
+        const token = JSON.parse(localStorage.getItem('feedbackUser'));
+        const product_category = productDetails.category.split(/\s*,\s*/);
+        const response = await api.post('/product/add', {
+            product_name: productDetails.name,
+            logo_url: productDetails.logoUrl,
+            product_link: productDetails.productLink,
+            product_description: productDetails.productDescription,
+            product_category
+        }, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        console.log('response check', response);
+
+        return ({
+            success: response.data.success,
+            message: response.data.message
+        });
+    }
+    catch (err) {
+        console.log('error in adding product', err);
+        return({
+            success: false,
+            message: 'Network error! try again'
+        })
+    }
 }
 
 const getAllProducts = async () => {
     try {
         const response = await api.get('/product/view');
         console.log('check response', response);
-        return ({
-            success: true,
-            data: [
-                {
-                    name: 'Cred Club',
-                    image_url: 'this is image url',
-                    tags: ['Fintech', 'B2B'],
-                    comments: [
-                        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, praesentium.',
-                        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, praesentium maiores tempore velit tenetur provident.',
-                        'maiores tempore velit tenetur provident.maiores tempore velit tenetur provident.'
-                    ]
-                },
-                {
-                    name: 'Cred Club2',
-                    image_url: 'image url 2',
-                    tags: ['Agritech'],
-                    comments: [
-                        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, praesentium.',
-                        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, praesentium maiores tempore velit tenetur provident.',
-                        'maiores tempore velit tenetur provident.maiores tempore velit tenetur provident.'
-                    ]
-
-                }
-            ]
+        return({
+            success: response.data.success,
+            data: response.data.data 
         })
     }
     catch (err) {
@@ -101,6 +101,44 @@ const getAllFilters = async () => {
     })
 }
 
+const addLike = async(ObjId)=>{
+    try{
+        const response = await api.patch(`/product/like/${ObjId}`);
+        console.log('checking response in addlike function', response);
+        return ({
+            success: response.data.success,
+            message: response.data.message
+        });
+    }
+    catch(err){
+        console.log('chck error in like', err);
+        return({
+            success: false,
+            message: 'Could not add like, try again'
+        })
+    }
+}
+
+const addComment = async(productObj)=>{
+    try{
+        const response = await api.patch(`/product/comment/${productObj.id}`,{
+            comment: productObj.comment
+        })
+        return ({
+            success: response.data.success,
+            message: response.data.message
+        });
+        
+    }
+    catch(err){
+        console.log('chck error in comment', err);
+        return({
+            success: false,
+            message: 'Could not add comment, try again'
+        })
+
+    }
+}
 
 
 export {
@@ -108,5 +146,7 @@ export {
     getUserLoggedIn,
     addProduct,
     getAllProducts,
-    getAllFilters
+    getAllFilters,
+    addLike,
+    addComment
 }

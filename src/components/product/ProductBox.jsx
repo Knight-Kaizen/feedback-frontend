@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import styles from './ProductBox.module.css'
+import { addComment, addLike } from '../../actions/api';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 export default
     function ProductBox(props) {
 
@@ -7,7 +10,10 @@ export default
     const [displayComments, setDisplayComments] = useState();
     const [showCommentBox, setShowCommentBox] = useState();
     const [comment, setComment] = useState('');
+    const [likeCount, setLikeCount] = useState();
+    const [commentCount, setCommentCount] = useState();
 
+    const navigate = useNavigate();
     useEffect(() => {
         const tempDisplayChips = props.tags.map((item) => {
             return (
@@ -24,6 +30,8 @@ export default
         setDisplayComments(tempDisplayComments);
         setDisplayChips(tempDisplayChips);
         setShowCommentBox(false);
+        setLikeCount(props.likes);
+        setCommentCount(props.comments_count);
     }, [])
 
 
@@ -32,25 +40,48 @@ export default
         setShowCommentBox(showCommentBox ? false : true);
     }
 
-    const writeComment = (e)=>{
+    const writeComment = (e) => {
         setComment(() => {
             return e.target.value
-            
+
         })
     }
 
-    const handleComment = ()=>{
+    const handleComment = async () => {
         console.log('show comment', comment);
+        const result = await addComment({
+            id: props.id,
+            comment: comment
+        })
+        if (result.success) {
+            setCommentCount(commentCount + 1);
+            const newCommentsArray = displayComments.map(item => item)
+            newCommentsArray.push(<span className={styles.comments}>{comment}</span>)
+            setDisplayComments(newCommentsArray);
+        }
+        else {
+            toast.error(result.message, { autoClose: 3000 })
+        }
+    }
+
+    const handleLikes = async () => {
+        const result = await addLike(props.id);
+        if (result.success) {
+            setLikeCount(likeCount + 1);
+        }
+        else {
+            toast.error(result.message, { autoClose: 3000 })
+        }
     }
 
 
     return (
         <>
             <div className={styles.main}>
-                <img src='../../Images/sample.png' className={styles.image1}></img>
+                <img src={props.logo} className={styles.image1}></img>
                 <div className={styles.box2}>
                     <span className={styles.text1}>{props.name}</span>
-                    <span className={styles.text2}> It is good for credit card payments,it is fast,secure</span>
+                    <span className={styles.text2}> {props.description}</span>
                     <div className={styles.box21}>
                         {displayChips}
                         <img src="../../Images/comment2.png" alt="" className={styles.image3} onClick={handleCommentBox} />
@@ -58,12 +89,12 @@ export default
                     </div>
                 </div>
                 <div className={styles.box3}>
-                    <div className={styles.box31}>
+                    <div className={styles.box31} onClick={handleLikes}>
                         <img src='../../Images/likes.png' className={styles.image2}></img>
-                        <span className={styles.text3}>112</span>
+                        <span className={styles.text3}>{likeCount}</span>
                     </div>
                     <div className={styles.box32}>
-                        <span className={styles.text5}>11</span>
+                        <span className={styles.text5}>{commentCount}</span>
                         <img src="../../Images/comment.png" alt="" className={styles.image5} />
                     </div>
                 </div>
@@ -72,7 +103,7 @@ export default
             {showCommentBox && <div className={styles.main2}>
                 <div className={styles.top}>
                     <input className={styles.commentBox} placeholder='Add a comment...' onChange={writeComment}></input>
-                    <img src="../../Images/send.png" alt="" className={styles.image4} onClick={handleComment}/>
+                    <img src="../../Images/send.png" alt="" className={styles.image4} onClick={handleComment} />
                 </div>
                 <div className={styles.bottom}>
                     {displayComments}

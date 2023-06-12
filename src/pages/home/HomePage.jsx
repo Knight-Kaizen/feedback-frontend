@@ -19,7 +19,7 @@ export default
     const [productDisplay, setProductDisplay] = useState([]);
     const [tagDisplay, setTagDisplay] = useState([]);
     const [displaySortOptions, setDisplaySortOptions] = useState();
-
+    let query = '';
     const { width } = useWindowResize();
 
 
@@ -27,29 +27,32 @@ export default
     useEffect(()=>{
         setDisplaySortOptions(false);
     }, [])
+    const getProductsAndDisplay = async () => {
+        const result = await getAllProducts();
+        console.log('checking result in homepage', result);
+        if (result.success) {
+            const tempDisplay = result.data.map((item) => {
+                return (
+                    <ProductBox
+                        id = {item._id}
+                        name={item.product_name}
+                        logo = {item.logo_url}
+                        tags={item.product_category}
+                        comments={item.comments}
+                        comments_count={item.total_comments}
+                        likes = {item.likes}
+                        description = {item.product_description}
+                    />
+                )
+            })
+            setProductDisplay(tempDisplay);
 
-    useEffect(() => {
-
-        const getProductsAndDisplay = async () => {
-            const result = await getAllProducts();
-            if (result.success) {
-                const tempDisplay = result.data.map((item) => {
-                    return (
-                        <ProductBox
-                            name={item.name}
-                            tags={item.tags}
-                            comments={item.comments}
-                        />
-                    )
-                })
-                setProductDisplay(tempDisplay);
-
-            }
-            else {
-                toast.error('Error in getting products, please retry!', { autoClose: 3000 });
-            }
         }
-
+        else {
+            toast.error('Error in getting products, please retry!', { autoClose: 3000 });
+        }
+    }
+    useEffect(() => {
         getProductsAndDisplay();
 
     }, [])
@@ -72,6 +75,7 @@ export default
                         <FilterChip
                             name={item}
                             isSelected={isSelected}
+                            handleClick = {handleTags}
                         />
                     )
                 })
@@ -114,8 +118,11 @@ export default
         setDisplaySortOptions(displaySortOptions?false:true)
         if(filter != 'Select'){
             setSortBy(sortBy == filter ? 'Select': filter)
-        }
-
+            
+        }        
+    }
+    const handleTags = (tag)=>{
+        console.log('checking tag', tag);
     }
 
     return (
@@ -175,7 +182,6 @@ export default
                         <div className={styles.box00}>
                             <div className={styles.text9}>Filters: </div>
                     <div className={styles.box2}>
-                        {/* {tagDisplay} */}
                         {tagDisplay}                     
                     </div>
                         </div>
@@ -183,7 +189,6 @@ export default
                     }
 
                     <div className={styles.box5}>
-                        {productDisplay}
                         {productDisplay}
                     </div>
                 </div>
