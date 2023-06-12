@@ -61,7 +61,7 @@ export default
     }
 
     return (
-        <div className={styles.design}>
+       
             <div className={styles.mainBox}>
             <span className={styles.text2}>Log in to continue</span>
             <div className={styles.box1}>
@@ -79,7 +79,7 @@ export default
                 <span className={styles.button1} onClick={handleSubmit}>Login</span>
             </div>
         </div>
-        </div>
+      
 
     )
 }

@@ -15,7 +15,7 @@ export default
 
     const navigate = useNavigate();
 
-    const { userLoggedIn, setUserLoggedIn, modalToShow, setModalToShow, showModal, setShowModal, filterSelected, sortBy, setSortBy, updateAvailable, setUpdateAvailable } = useContext(UserContext);
+    const { userLoggedIn, setUserLoggedIn, modalToShow, setModalToShow, showModal, setShowModal, filterSelected, sortBy, setSortBy, updateAvailable, setUpdateAvailable,filterUpdateAvailable, setFilterUpdateAvailable } = useContext(UserContext);
     const [productDisplay, setProductDisplay] = useState([]);
     const [tagDisplay, setTagDisplay] = useState([]);
     const [displaySortOptions, setDisplaySortOptions] = useState();
@@ -67,33 +67,32 @@ export default
         getProductsAndDisplay();
 
     }, [])
+    const getFiltersAndDisplay = async () => {
+        const result = await getAllFilters();
+        if (result.success) {
+            const tempDisplay = result.data.map((item) => {
+                let isSelected = false;
 
-    useEffect(() => {
+                if (item == filterSelected) {
+                    isSelected = true;
+                }
 
-        const getFiltersAndDisplay = async () => {
-            const result = await getAllFilters();
-            if (result.success) {
-                const tempDisplay = result.data.map((item) => {
-                    let isSelected = false;
+                return (
+                    <FilterChip
+                        name={item}
+                        isSelected={isSelected}
+                    />
+                )
+            })
 
-                    if (item == filterSelected) {
-                        isSelected = true;
-                    }
-
-                    return (
-                        <FilterChip
-                            name={item}
-                            isSelected={isSelected}
-                        />
-                    )
-                })
-
-                setTagDisplay(tempDisplay);
-            }
-            else {
-                toast.error('Error in getting filters', { autoClose: 3000 });
-            }
+            setTagDisplay(tempDisplay);
+            setFilterUpdateAvailable(false);
         }
+        else {
+            toast.error('Error in getting filters', { autoClose: 3000 });
+        }
+    }
+    useEffect(() => {
 
         getFiltersAndDisplay();
     }, [filterSelected])
@@ -105,7 +104,11 @@ export default
         }
     }, [updateAvailable])
 
-
+    useEffect(()=>{
+        if(filterUpdateAvailable){
+            getFiltersAndDisplay();
+        }
+    }, [filterUpdateAvailable])
 
     const handleLoginLogout = () => {
         if (userLoggedIn) {
@@ -131,30 +134,30 @@ export default
     const handleFilter = (filter) => {
         setDisplaySortOptions(displaySortOptions ? false : true)
         if (filter == 'Comments') {
-            if(sortBy == 'comments'){
+            if (sortBy == 'comments') {
                 setSortBy('');
                 setDisplaySelect('Select');
             }
-            else{
+            else {
                 setSortBy('comments');
-            setDisplaySelect(filter);
-            
+                setDisplaySelect(filter);
+
             }
             setUpdateAvailable(true);
-            
+
         }
         else if (filter == 'UpVotes') {
-            if(sortBy == 'likes'){
+            if (sortBy == 'likes') {
                 setDisplaySelect('Select');
                 setSortBy('');
             }
-            else{
+            else {
                 setSortBy('likes');
                 setDisplaySelect(filter);
-                
+
             }
             setUpdateAvailable(true);
-            
+
         }
     }
 
@@ -165,7 +168,7 @@ export default
                 <span className={styles.text1}>Feedback</span>
                 <div className={styles.HeaderBox}>
                     <span className={styles.text2} onClick={handleLoginLogout}>{userLoggedIn ? 'Logout' : 'Login'}</span>
-                    <span className={styles.text2} onClick={() => navigate('signUp')}>{userLoggedIn ? `Hello User, `: 'Sign up'}{userLoggedIn && <p>&nbsp; &#128512;</p>}</span>
+                    <span className={styles.text2} onClick={() => navigate('signUp')}>{userLoggedIn ? `Hello User, ` : 'Sign up'}{userLoggedIn && <p>&nbsp; &#128512;</p>}</span>
                 </div>
             </div>
             <div className={styles.bodyUpper}>

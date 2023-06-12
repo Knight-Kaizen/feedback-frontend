@@ -17,7 +17,7 @@ export default
         productLink: '',
         productDescription: ''
     })
-    const { setShowModal, productToEdit, setUpdateAvailable } = useContext(UserContext);
+    const { setShowModal, productToEdit, setUpdateAvailable, setFilterUpdateAvailable } = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -63,6 +63,7 @@ export default
                 setShowModal(false);
                 navigate('/');
                 setUpdateAvailable(true);
+                setFilterUpdateAvailable(true);
 
             }
             else {

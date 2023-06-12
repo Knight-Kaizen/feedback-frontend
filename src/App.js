@@ -15,6 +15,7 @@ function App() {
   const [sortBy, setSortBy] = useState();
   const [updateAvailable, setUpdateAvailable] = useState();
   const [productToEdit, setProductToEdit] = useState();
+  const [filterUpdateAvailable, setFilterUpdateAvailable] = useState();
   useEffect(() => {
 
     const isUserLoggedIn = () => {
@@ -45,7 +46,8 @@ function App() {
         filterSelected, setFilterSelected,
         sortBy, setSortBy,
         updateAvailable, setUpdateAvailable,
-        productToEdit, setProductToEdit
+        productToEdit, setProductToEdit,
+        filterUpdateAvailable, setFilterUpdateAvailable
       }}
     >
 
