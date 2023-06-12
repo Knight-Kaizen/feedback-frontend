@@ -160,6 +160,11 @@ export default
 
         }
     }
+    const handleSignUp = ()=>{
+        if(!userLoggedIn){
+            navigate('signUp')
+        }
+    }
 
 
     return (
@@ -168,7 +173,7 @@ export default
                 <span className={styles.text1}>Feedback</span>
                 <div className={styles.HeaderBox}>
                     <span className={styles.text2} onClick={handleLoginLogout}>{userLoggedIn ? 'Logout' : 'Login'}</span>
-                    <span className={styles.text2} onClick={() => navigate('signUp')}>{userLoggedIn ? `Hello User, ` : 'Sign up'}{userLoggedIn && <p>&nbsp; &#128512;</p>}</span>
+                    <span className={styles.text2} onClick={handleSignUp}>{userLoggedIn ? `Hello User, ` : 'Sign up'}{userLoggedIn && <p>&nbsp; &#128512;</p>}</span>
                 </div>
             </div>
             <div className={styles.bodyUpper}>
