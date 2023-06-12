@@ -84,3 +84,13 @@
     color: red;
 
 }
+
+@media screen and (max-width:600px) {
+    .mainBox{
+        width: 80vw;
+        
+    }
+    .text2{
+        font-size: 1.5rem;
+    }
+}

@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styles from './ProductBox.module.css'
 import { addComment, addLike } from '../../actions/api';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../App';
 export default
     function ProductBox(props) {
 
@@ -12,8 +13,8 @@ export default
     const [comment, setComment] = useState('');
     const [likeCount, setLikeCount] = useState();
     const [commentCount, setCommentCount] = useState();
+    const { userLoggedIn, setModalToShow, setShowModal, setProductToEdit } = useContext(UserContext);
 
-    const navigate = useNavigate();
     useEffect(() => {
         const tempDisplayChips = props.tags.map((item) => {
             return (
@@ -36,7 +37,6 @@ export default
 
 
     const handleCommentBox = () => {
-        console.log('comment box loading');
         setShowCommentBox(showCommentBox ? false : true);
     }
 
@@ -48,7 +48,6 @@ export default
     }
 
     const handleComment = async () => {
-        console.log('show comment', comment);
         const result = await addComment({
             id: props.id,
             comment: comment
@@ -74,6 +73,15 @@ export default
         }
     }
 
+    const handleEdit = () => {
+        if (userLoggedIn) {
+            setModalToShow('AddProductsEdit');
+            setShowModal(true);
+            setProductToEdit(props);
+        }
+
+    }
+
 
     return (
         <>
@@ -86,6 +94,7 @@ export default
                         {displayChips}
                         <img src="../../Images/comment2.png" alt="" className={styles.image3} onClick={handleCommentBox} />
                         <span className={styles.text4} onClick={handleCommentBox}>Comment</span>
+                        {userLoggedIn && <span className={`${styles.button1} `} onClick={handleEdit}>Edit</span>}
                     </div>
                 </div>
                 <div className={styles.box3}>

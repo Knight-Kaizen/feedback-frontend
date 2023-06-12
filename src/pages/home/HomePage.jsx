@@ -15,38 +15,49 @@ export default
 
     const navigate = useNavigate();
 
-    const { userLoggedIn, setUserLoggedIn, modalToShow, setModalToShow, showModal, setShowModal, filterSelected, setFilterSelected, sortBy, setSortBy } = useContext(UserContext);
+    const { userLoggedIn, setUserLoggedIn, modalToShow, setModalToShow, showModal, setShowModal, filterSelected, sortBy, setSortBy, updateAvailable, setUpdateAvailable } = useContext(UserContext);
     const [productDisplay, setProductDisplay] = useState([]);
     const [tagDisplay, setTagDisplay] = useState([]);
     const [displaySortOptions, setDisplaySortOptions] = useState();
-    let query = '';
     const { width } = useWindowResize();
+    const [displaySelect, setDisplaySelect] = useState('Select');
+    const [productCount, setProductCount] = useState();
 
-
-
-    useEffect(()=>{
+    useEffect(() => {
         setDisplaySortOptions(false);
     }, [])
     const getProductsAndDisplay = async () => {
-        const result = await getAllProducts();
-        console.log('checking result in homepage', result);
+        let query = '';
+        if (sortBy && sortBy != 'Select') {
+            query += 'sort='
+            query += sortBy;
+        }
+        if (filterSelected && filterSelected != 'All') {
+            if (query) {
+                query += '&';
+            }
+            query += 'product_category='
+            query += filterSelected;
+        }
+        const result = await getAllProducts(query);
         if (result.success) {
             const tempDisplay = result.data.map((item) => {
                 return (
                     <ProductBox
-                        id = {item._id}
+                        id={item._id}
                         name={item.product_name}
-                        logo = {item.logo_url}
+                        logo={item.logo_url}
                         tags={item.product_category}
                         comments={item.comments}
                         comments_count={item.total_comments}
-                        likes = {item.likes}
-                        description = {item.product_description}
+                        likes={item.likes}
+                        description={item.product_description}
                     />
                 )
             })
             setProductDisplay(tempDisplay);
-
+            setUpdateAvailable(false);
+            setProductCount(tempDisplay.length);
         }
         else {
             toast.error('Error in getting products, please retry!', { autoClose: 3000 });
@@ -64,18 +75,15 @@ export default
             if (result.success) {
                 const tempDisplay = result.data.map((item) => {
                     let isSelected = false;
-                    // console.log('checking selection', item);
 
                     if (item == filterSelected) {
                         isSelected = true;
-                        // console.log('selected', item)
                     }
 
                     return (
                         <FilterChip
                             name={item}
                             isSelected={isSelected}
-                            handleClick = {handleTags}
                         />
                     )
                 })
@@ -90,7 +98,12 @@ export default
         getFiltersAndDisplay();
     }, [filterSelected])
 
-
+    useEffect(() => {
+        if (updateAvailable) {
+            setProductDisplay('');
+            getProductsAndDisplay();
+        }
+    }, [updateAvailable])
 
 
 
@@ -98,6 +111,7 @@ export default
         if (userLoggedIn) {
             setUserLoggedIn(false);
             toast.success('User Logged out!');
+            localStorage.removeItem('feedbackUser');
         }
         else {
             navigate('login');
@@ -114,17 +128,36 @@ export default
         setShowModal(true);
     }
 
-    const handleFilter = (filter)=>{
-        setDisplaySortOptions(displaySortOptions?false:true)
-        if(filter != 'Select'){
-            setSortBy(sortBy == filter ? 'Select': filter)
+    const handleFilter = (filter) => {
+        setDisplaySortOptions(displaySortOptions ? false : true)
+        if (filter == 'Comments') {
+            if(sortBy == 'comments'){
+                setSortBy('');
+                setDisplaySelect('Select');
+            }
+            else{
+                setSortBy('comments');
+            setDisplaySelect(filter);
             
-        }        
+            }
+            setUpdateAvailable(true);
+            
+        }
+        else if (filter == 'UpVotes') {
+            if(sortBy == 'likes'){
+                setDisplaySelect('Select');
+                setSortBy('');
+            }
+            else{
+                setSortBy('likes');
+                setDisplaySelect(filter);
+                
+            }
+            setUpdateAvailable(true);
+            
+        }
     }
-    const handleTags = (tag)=>{
-        console.log('checking tag', tag);
-        
-    }
+
 
     return (
         <>
@@ -132,7 +165,7 @@ export default
                 <span className={styles.text1}>Feedback</span>
                 <div className={styles.HeaderBox}>
                     <span className={styles.text2} onClick={handleLoginLogout}>{userLoggedIn ? 'Logout' : 'Login'}</span>
-                    <span className={styles.text2} onClick={() => navigate('signUp')}>Sign up</span>
+                    <span className={styles.text2} onClick={() => navigate('signUp')}>{userLoggedIn ? `Hello User, `: 'Sign up'}{userLoggedIn && <p>&nbsp; &#128512;</p>}</span>
                 </div>
             </div>
             <div className={styles.bodyUpper}>
@@ -157,22 +190,21 @@ export default
                         </div>
                     </div>}
                 <div className={styles.lowerRight}>
-                    {/* box3 => upperBox */}
 
                     <div className={styles.box3}>
                         <div className={styles.box31}>
-                        <span className={styles.text7}> 10 Suggestions</span>
+                            <span className={styles.text7}> {productCount} Suggestions</span>
                         </div>
                         <div className={styles.box32}>
                             <div className={styles.box321}>
-                            <span className={styles.text8} >Sort By: </span>
+                                <span className={styles.text8} >Sort By: </span>
                             </div>
-                            
+
                             <div className={styles.box322}>
-                            <span className={styles.innerBox1} onClick={()=>handleFilter('Select')}>{sortBy}</span>
-                            {displaySortOptions && <span className={styles.innerBox2} onClick={()=>handleFilter('UpVotes')}>Upvotes</span>}
-                            {displaySortOptions && <span className={styles.innerBox2} onClick={()=>handleFilter('Comments')}>Comments</span>}
-                            
+                                <span className={styles.innerBox1} onClick={() => handleFilter('Select')}>{displaySelect}</span>
+                                {displaySortOptions && <span className={styles.innerBox2} onClick={() => handleFilter('UpVotes')}>Upvotes</span>}
+                                {displaySortOptions && <span className={styles.innerBox2} onClick={() => handleFilter('Comments')}>Comments</span>}
+
                             </div>
                         </div>
                         <div className={styles.box4} onClick={handleAddProducts}>+ Add Products</div>
@@ -182,9 +214,9 @@ export default
                         width < 600 &&
                         <div className={styles.box00}>
                             <div className={styles.text9}>Filters: </div>
-                    <div className={styles.box2}>
-                        {tagDisplay}                     
-                    </div>
+                            <div className={styles.box2}>
+                                {tagDisplay}
+                            </div>
                         </div>
 
                     }
@@ -194,7 +226,7 @@ export default
                     </div>
                 </div>
             </div>
-            {showModal && <Modal show = {modalToShow}/>}
+            {showModal && <Modal show={modalToShow} />}
 
         </>
     )

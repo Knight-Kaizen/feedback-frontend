@@ -1,7 +1,6 @@
 
 export
     const clientSideValidation = (userObj) => {
-        console.log('checking data here', userObj);
         const { name, email, mobile, password } = userObj;
         const error = {};
 

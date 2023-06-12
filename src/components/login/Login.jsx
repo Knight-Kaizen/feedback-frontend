@@ -8,16 +8,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from '../../App';
 
 
-export default 
-function Login(){
+export default
+    function Login() {
 
     const [userDetails, setUserDetails] = useState({
         email: '',
         password: ''
     })
     const [errors, setErrors] = useState({});
-    const {setUserLoggedIn, setModalToShow} = useContext(UserContext);
-    const navigate = useNavigate();
+    const { setUserLoggedIn, setModalToShow } = useContext(UserContext);
 
 
     const handleChange = (e) => {
@@ -30,7 +29,7 @@ function Login(){
     }
 
 
-    const handleSubmit = async() => {
+    const handleSubmit = async () => {
         const userToBeLoggedIn = {
             name: '0000000',
             email: userDetails.email,
@@ -42,15 +41,15 @@ function Login(){
             // do the API call
             const userLogIn = await getUserLoggedIn(userToBeLoggedIn);
 
-            if(userLogIn.success){
-                toast.success(userLogIn.message, {autoClose: 3000});
+            if (userLogIn.success) {
+                toast.success(userLogIn.message, { autoClose: 3000 });
                 setUserLoggedIn(true);
                 setModalToShow('AddProducts');
             }
-            else{
-                toast.error(userLogIn.message, {autoClose: 3000});
+            else {
+                toast.error(userLogIn.message, { autoClose: 3000 });
             }
-            
+
         }
         else {
             setErrors(result.errors);
@@ -62,23 +61,25 @@ function Login(){
     }
 
     return (
-        <div className={styles.mainBox}>
-                            <span className={styles.text2}>Log in to continue</span>
-                <div className={styles.box1}>
-                    <img src="../../Images/Email.png" alt="img-1" className={styles.image1} />
-                    <input placeholder='Email' className={styles.input1} name='email' onChange={handleChange}></input>
-                </div>
-                {errors.email && <span className={styles.error}>{errors.email}</span>}
-                <div className={styles.box2}>
-                    <img src="../../Images/Password.png" alt="img-2" className={styles.image2} />
-                    <input type="password" placeholder='Password' className={styles.input2} name='password' onChange={handleChange} />
-                </div>
-                {errors.password && <span className={styles.error}>{errors.password}</span>}
-                <span className={styles.box3}>Don’t have an account? <span className={styles.text3} onClick={handleSignUp}>Sign up?</span></span>
-                <div className={styles.box4}>
-                    <span className={styles.button1} onClick={handleSubmit}>Login</span>
-                </div>
+        <div className={styles.design}>
+            <div className={styles.mainBox}>
+            <span className={styles.text2}>Log in to continue</span>
+            <div className={styles.box1}>
+                <img src="../../Images/Email.png" alt="img-1" className={styles.image1} />
+                <input placeholder='Email' className={styles.input1} name='email' onChange={handleChange}></input>
             </div>
-        
+            {errors.email && <span className={styles.error}>{errors.email}</span>}
+            <div className={styles.box2}>
+                <img src="../../Images/Password.png" alt="img-2" className={styles.image2} />
+                <input type="password" placeholder='Password' className={styles.input2} name='password' onChange={handleChange} />
+            </div>
+            {errors.password && <span className={styles.error}>{errors.password}</span>}
+            <span className={styles.box3}>Don’t have an account? <span className={styles.text3} onClick={handleSignUp}>Sign up?</span></span>
+            <div className={styles.box4}>
+                <span className={styles.button1} onClick={handleSubmit}>Login</span>
+            </div>
+        </div>
+        </div>
+
     )
 }

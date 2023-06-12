@@ -99,3 +99,18 @@
     color: red;
 
 }
+
+@media screen and (max-width: 600px) {
+    .mainBox{
+        width: 90vw;
+        /* height: 90vh; */
+    }
+    .text1{
+        font-size: 1.5rem;
+        width: 88vw;
+    }
+    .text2{
+        font-size: 1rem;
+        width: 90vw;
+    }
+}

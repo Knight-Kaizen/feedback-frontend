@@ -67,12 +67,12 @@ export default
             <div className={styles.mainBox}>
                 <div className={styles.box1}>
                     <img src="../../Images/Email.png" alt="img-1" className={styles.image1} />
-                    <input placeholder='Email' className={styles.input1} name='email' onChange={handleChange}></input>
+                    <input  placeholder='Email' className={styles.input1} name='email' onChange={handleChange}></input>
                 </div>
                 {errors.email && <span className={styles.error}>{errors.email}</span>}
                 <div className={styles.box2}>
                     <img src="../../Images/Password.png" alt="img-2" className={styles.image2} />
-                    <input type="password" placeholder='Password' className={styles.input2} name='password' onChange={handleChange} />
+                    <input  type="password" placeholder='Password' className={styles.input2} name='password' onChange={handleChange} />
                 </div>
                 {errors.password && <span className={styles.error}>{errors.password}</span>}
                 <span className={styles.box3}>Don’t have an account? <span className={styles.text3} onClick={handleSignUp}>Sign up?</span></span>

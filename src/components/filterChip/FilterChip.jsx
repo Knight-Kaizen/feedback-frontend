@@ -3,24 +3,19 @@ import styles from './FilterChip.module.css'
 import { UserContext } from '../../App'
 import { useNavigate } from 'react-router-dom';
 export default
-function FilterChip(props){
+    function FilterChip(props) {
 
-    const {setFilterSelected} = useContext(UserContext);
-    const navigate = useNavigate();
+    const { setFilterSelected, setUpdateAvailable } = useContext(UserContext);
 
-    const {name, isSelected} = props;
+    const { name, isSelected } = props;
 
-    const handleClick = ()=>{
-        // console.log('setting filter');
+    const handleClick = () => {
         setFilterSelected(name);
-        // navigate('/');
-        props.handleClick(name);
+        setUpdateAvailable(true);
     }
-    // console.log('checking props', props);
-    if(isSelected)
-    console.log(name, 'is selected');
 
-    return(
+
+    return (
         <div className={`${styles.main} ${isSelected && styles.selected}`} onClick={handleClick}>
             {name}
         </div>

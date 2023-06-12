@@ -4,9 +4,8 @@ import LoginPage from "./pages/login/LoginPage";
 import SignUpPage from "./pages/signup/SignUpPage";
 import { createContext, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import { getAllFilters, getAllProducts } from "./actions/api";
 
-  const UserContext = createContext();
+const UserContext = createContext();
 function App() {
 
   const [userLoggedIn, setUserLoggedIn] = useState();
@@ -14,31 +13,27 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [filterSelected, setFilterSelected] = useState();
   const [sortBy, setSortBy] = useState();
+  const [updateAvailable, setUpdateAvailable] = useState();
+  const [productToEdit, setProductToEdit] = useState();
+  useEffect(() => {
 
-  useEffect(()=>{
-
-    const isUserLoggedIn = ()=>{
+    const isUserLoggedIn = () => {
       //check if user is logged in
       const currUser = JSON.parse(localStorage.getItem('feedbackUser'));
-      if(currUser){
+      if (currUser) {
         setUserLoggedIn(true);
       }
-      else{
+      else {
         setUserLoggedIn(false);
       }
     }
-    
+
     isUserLoggedIn();
     setFilterSelected('All');
     setSortBy('Select');
-    
+    setUpdateAvailable(false);
   }, [])
- 
-  // useEffect(()=>{
-    
-    
 
-  // }, [products])
 
 
   return (
@@ -48,21 +43,23 @@ function App() {
         modalToShow, setModalToShow,
         showModal, setShowModal,
         filterSelected, setFilterSelected,
-        sortBy, setSortBy
+        sortBy, setSortBy,
+        updateAvailable, setUpdateAvailable,
+        productToEdit, setProductToEdit
       }}
     >
 
-    
-    <div>
-      <BrowserRouter>
+
+      <div>
+        <BrowserRouter>
           <Routes >
             <Route path="/" element={<HomePage />} />
-            <Route path="/signUp" element={<SignUpPage/>} />
-            <Route path="/login" element={<LoginPage/>} />
+            <Route path="/signUp" element={<SignUpPage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
         </BrowserRouter>
         <ToastContainer position="top-center" autoClose={false} closeOnClick />
-    </div>
+      </div>
     </UserContext.Provider>
   );
 }
