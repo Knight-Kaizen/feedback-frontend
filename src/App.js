@@ -17,8 +17,18 @@ function App() {
 
   useEffect(()=>{
 
-    //check if user is logged in
-    setUserLoggedIn(false);
+    const isUserLoggedIn = ()=>{
+      //check if user is logged in
+      const currUser = JSON.parse(localStorage.getItem('feedbackUser'));
+      if(currUser){
+        setUserLoggedIn(true);
+      }
+      else{
+        setUserLoggedIn(false);
+      }
+    }
+    
+    isUserLoggedIn();
     setFilterSelected('All');
     setSortBy('Select');
     

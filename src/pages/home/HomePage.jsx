@@ -52,7 +52,7 @@ export default
 
         getProductsAndDisplay();
 
-    }, [productDisplay])
+    }, [])
 
     useEffect(() => {
 
