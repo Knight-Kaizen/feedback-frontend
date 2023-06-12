@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: "http://localhost:8000"
-    // baseURL: "https://feedback-h6w1.onrender.com"
+    // baseURL: "http://localhost:8000"
+    baseURL: "https://feedback-h6w1.onrender.com"
 });
 
 const getUserRegistered = async (UserDetails) => {

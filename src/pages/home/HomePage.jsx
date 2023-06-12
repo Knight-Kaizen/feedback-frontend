@@ -123,6 +123,7 @@ export default
     }
     const handleTags = (tag)=>{
         console.log('checking tag', tag);
+        np
     }
 
     return (
