@@ -7,7 +7,7 @@
 .main {
     background-color: #36416A26;
     margin-top: 1rem;
-    height: 8rem;
+    min-height: 8rem;
     padding: .5rem;
     border-radius: .5rem .5rem 0 0;
     display: flex;
@@ -80,6 +80,7 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .image3 {
@@ -124,6 +125,9 @@
     border-radius: 1.25rem 0 0 1.25rem;
     font-size: 1.2rem;
     padding: .5rem 1rem;
+}
+.commentBox:focus{
+    outline: none;
 }
 
 .image4 {
@@ -197,5 +201,8 @@
     .image5 {
         height: 60%;
     }
-
+    .button1{
+        padding: .2rem 1rem;
+        font-size: .8em;
+    }
 }
