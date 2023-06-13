@@ -59,12 +59,12 @@
 
 .image2 {
     width: 60%;
-    height: 50%;
     object-fit: contain;
 }
 
 .text3 {
     font-size: 1.2rem;
+    padding: .5em;
 }
 
 .box32 {
