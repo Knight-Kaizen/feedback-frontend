@@ -55,4 +55,8 @@
     .right{
         display: none;
     }
+    .newModal{
+        top: 20%;
+        left: 10%;
+    }
 }
